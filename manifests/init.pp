@@ -10,23 +10,38 @@ class bugzilla {
 	# The package should do this perhaps, but they are optional.
 	package {
 		[
-		"bugzilla",
+		# "bugzilla", # Don't know what this is supposed to do...
 
 		# The following list was working out using checksetup.pl 
-		"perl-GD",
-		"perl-Chart",
-		"perl-Template-GD",
-		"perl-GDTextUtil",
-		"perl-GDGraph",
-		"perl-XML-Twig",
-		"perl-MIME-tools",
-		"perl-PatchReader",
-		"ImageMagick-perl",
-		"perl-Authen-SASL",
-		"perl-Authen-Radius",
-		"perl-HTML-Scrubber",
-		"perl-TheSchwartz",
-		"perl-Daemon-Generic",
+		# Packages are to be installed by Ubuntu
+		# "perl-GD",
+		"libgd-gd2-perl",
+		# "perl-Chart",
+		"libchart-perl",
+		# "perl-Template-GD",
+		"libhtml-template-perl",
+		# "perl-GDTextUtil",
+		"libgd-text-perl",
+		# "perl-GDGraph",
+		"libgd-graph-perl",
+		# "perl-XML-Twig",
+		"libxml-twig-perl",
+		# "perl-MIME-tools",
+		"libmime-tools-perl",
+		# "perl-PatchReader",
+		"",
+		# "ImageMagick-perl",
+		"libgraphics-magick-perl",
+		# "perl-Authen-SASL",
+		"libauthen-sasl-perl",
+		# "perl-Authen-Radius",
+		"libauthen-radius-perl",
+		# "perl-HTML-Scrubber",
+		"libhtml-scrubber-perl",
+		# "perl-TheSchwartz",
+		"libtheschwartz-perl",
+		# "perl-Daemon-Generic",
+		"libdaemon-generic-perl",
 		]:
 			ensure => installed
 	}
@@ -36,6 +51,6 @@ class bugzilla {
 		ensure => directory,
 		mode => 0755,
 		owner => "root",
-		group => "root"
+		group => "root",
 	}
 }
