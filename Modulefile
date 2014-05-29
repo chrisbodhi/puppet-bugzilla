@@ -1,6 +1,6 @@
-name 'bobsh-bugzilla'
+name 'bugzilla'
 version '1.0.2'
 summary 'Puppet to install Bugzilla'
-description 'See above.'
+description 'See above. Forked from bobsh-bugzilla.'
 author 'chrisbodhi'
 project_page 'https://github.com/chrisbodhi/puppet-bugzilla'
