@@ -3,48 +3,54 @@
 # Mozilla Public License.
 #
 # This class is designed to install and setup Bugzilla.
-class puppet_bugzilla {
+class bugzilla {
 	$res = "bugzilla"
 
-	# These are the requirements for running a fully-functional bugzilla
-	# # The package should do this perhaps, but they are optional.
-	# package {
-	# 	[
-	# 	# "bugzilla", # Don't know what this is supposed to do...
+  include apache
 
-	# 	# The following list was working out using checksetup.pl 
-	# 	# Packages are to be installed by Ubuntu
-	# 	# "perl-GD",
-	# 	"libgd-gd2-perl",
-	# 	# "perl-Chart",
-	# 	"libchart-perl",
-	# 	# "perl-Template-GD",
-	# 	"libhtml-template-perl",
-	# 	# "perl-GDTextUtil",
-	# 	"libgd-text-perl",
-	# 	# "perl-GDGraph",
-	# 	"libgd-graph-perl",
-	# 	# "perl-XML-Twig",
-	# 	"libxml-twig-perl",
-	# 	# "perl-MIME-tools",
-	# 	"libmime-tools-perl",
-	# 	# "perl-PatchReader",
-	# 	"",
-	# 	# "ImageMagick-perl",
-	# 	"libgraphics-magick-perl",
-	# 	# "perl-Authen-SASL",
-	# 	"libauthen-sasl-perl",
-	# 	# "perl-Authen-Radius",
-	# 	"libauthen-radius-perl",
-	# 	# "perl-HTML-Scrubber",
-	# 	"libhtml-scrubber-perl",
-	# 	# "perl-TheSchwartz",
-	# 	"libtheschwartz-perl",
-	# 	# "perl-Daemon-Generic",
-	# 	"libdaemon-generic-perl",
-	# 	]:
-	# 		ensure => installed
-	# }
+  package {['perl', 'make', 'gcc']:
+    ensure => present,
+  }
+  file { '/root/bz_package.sh':
+    ensure => present,
+    owner => root,
+    group => root,
+    mode => 755,
+    source => 'puppet:///modules/bugzilla/bz_package.sh',
+    notify => Exec['/root/bz_package.sh'],
+    require => Package['apache'],
+  }
+  exec { '/root/bz_package.sh':
+    command => '/root/bz_package.sh',
+    refreshonly => true,
+    require => File['/root/bz_package.sh'],
+  }
+  file { '/var/www/bugzilla':
+    ensure => link,
+    target => '/var/www/bugzilla-4.4.4',
+    require => Exec['/root/bz_package.sh'],
+  }
+  exec { '/usr/bin/perl checksetup.pl':
+    command => '/usr/bin/perl checksetup.pl',
+    path => '/var/www/bugzilla/',
+    refreshonly => true,
+    require => File['/var/www/bugzilla/'],
+  }
+  exec { '/usr/bin/perl install-module.pl --all':
+    command => '/usr/bin/perl install-module.pl --all',
+    path => '/var/www/bugzilla/',
+    refreshonly => true,
+    require => File['/var/www/bugzilla/'],
+    onlyif => ['/usr/bin/perl checksetup.pl'], 
+  }
+
+
+
+  # [CHECK] had to apt-get install make and gcc
+  # [CHECK] ./checksetup.pl
+  # ./checksetup.pl --check-modules
+  # /usr/bin/perl install-module.pl --all
+  # update variables in ./localconfig: create_htaccess, webservergroup, use_suexec, db_driver, db_host, db_name, db_user, db_pass, db_port, db_sock, db_check, index_html, cvsbin, interdiffbin, diffpath, site_wide_secret
 
 	# Create a dir for puppet to work with config
 	file {"/etc/bugzilla/.puppet":

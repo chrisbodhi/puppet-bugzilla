@@ -32,7 +32,7 @@
 #		Location of diff home (/usr/bin/)
 #	[*site_wide_secret*]
 #		Set the site wide secret
-define puppet_bugzilla::project (
+define bugzilla::project (
 	$admin_email,
 	$admin_password,
 	$admin_realname,
@@ -78,7 +78,7 @@ define puppet_bugzilla::project (
 		owner => 'root',
 		group => 'root',
 		mode => '0644',
-		content => template('puppet_bugzilla/answer.erb'),
+		content => template('bugzilla/answer.erb'),
 		notify => Exec["bugzilla_checksetup_${name}"]
 	}
 	exec{"bugzilla_checksetup_${name}":
