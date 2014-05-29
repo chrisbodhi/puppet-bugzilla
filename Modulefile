@@ -1,5 +1,5 @@
 name 'bobsh-bugzilla'
-version '1.0.1'
+version '1.0.2'
 summary 'Puppet to install Bugzilla'
 description 'See above.'
 author 'chrisbodhi'
