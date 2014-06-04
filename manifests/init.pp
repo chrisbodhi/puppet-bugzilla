@@ -43,15 +43,6 @@ class bugzilla {
     require => File['/var/www/bugzilla/'],
     onlyif => ['/usr/bin/perl checksetup.pl'], 
   }
-
-
-
-  # [CHECK] had to apt-get install make and gcc
-  # [CHECK] ./checksetup.pl
-  # ./checksetup.pl --check-modules
-  # /usr/bin/perl install-module.pl --all
-  # update variables in ./localconfig: create_htaccess, webservergroup, use_suexec, db_driver, db_host, db_name, db_user, db_pass, db_port, db_sock, db_check, index_html, cvsbin, interdiffbin, diffpath, site_wide_secret
-
 	# Create a dir for puppet to work with config
 	file {"/etc/bugzilla/.puppet":
 		ensure => directory,
